@@ -42,7 +42,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
         else:				#verityToken
             print(msg)
             print(type(msg))
-            level = '\x00'
+            level = '\x20'
             try:
                 decodedToken = jwt.decode(msg.decode(), key, algorithm = "HS256")
                 if decodedToken["level"] == 'guest':
@@ -53,7 +53,14 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
                     level = '\x04'
                 elif decodedToken["level"] == 'supervisor':
                     level = '\x05'
-            except:
+            except jwt.ExpiredSignatureError:
+                print("This token is expired!")
+                level = '\x10'
+#            except jwt.ValueError:
+#                print("Value Error!")
+#                pass
+            except Exception:
+                print("Except!")
                 pass
             client_socket.sendall(level.encode())	#decode, token processing
 #            print(jwt.decode(msg.decode(), key, algorithm = "HS256")["level"])

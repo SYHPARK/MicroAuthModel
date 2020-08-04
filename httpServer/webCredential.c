@@ -17,6 +17,7 @@
 #define SERVERPORT 8888
 #define AUTHSERVERPORT 5432
 #define AUTHSERVERIP "127.0.0.1"
+#define TOKENERRORDETECTOR 56
 #define VERIFYWITHTOKEN 8
 
 #define REALM     "\"Level Info\""
@@ -28,7 +29,8 @@
 #define MANAGERPW	"manager"
 #define SUPERVISOR	"supervisor"
 #define SUPERVISORPW	"supervisor"
-#define ERRORPAGE	"<html><body>Invalid Token Error (Type, Expiration time) Occured.</body></html>"
+#define INVALIDTOKEN_PAGE	"<html><body>Invalid Token Error Occured.</body></html>"
+#define EXPIREDTOKEN_PAGE	"<html><body>Expired Token Error Occured.</body></html>"
 #define GUESTPAGE	"<html><body>A guest.</body></html>"
 #define USERPAGE	"<html><body>A user.</body></html>"
 #define MANAGERPAGE	"<html><body>A manager.</body></html>"
@@ -39,7 +41,7 @@
 
 using namespace std;
 
-enum level{ error=0, guest=2, user=3, manager=4, supervisor=5 };	//Must not be 0
+enum level{ expiredToken_error = 0x10, invalidToken_error = 0x20, guest=2, user=3, manager=4, supervisor=5 };	//Must not be 0
 
 /*------ Base64 Encoding Table ------*/
 static const char MimeBase64[] = {
@@ -455,7 +457,7 @@ is_authenticated (struct MHD_Connection *connection,
       printf("Valid value: %d\n", valid | 8);
       return valid | 8;
     }
-    else return 0;
+    else return valid;
   }
 
   headervalue =
@@ -491,10 +493,14 @@ secret_page (struct MHD_Connection *connection, enum level l)
   int ret;
   struct MHD_Response *response;
   const char* page;
-  bool verify_with_token = l & VERIFYWITHTOKEN;
+  int issue_token = (int)l & (int)TOKENERRORDETECTOR;
   switch(l){
-    case error:
-      page = ERRORPAGE;
+    //expiredToken_error = 0x10, invalidToken_error = 0x20
+    case expiredToken_error:
+      page = EXPIREDTOKEN_PAGE;	//yongbak
+      break;
+    case invalidToken_error:
+      page = INVALIDTOKEN_PAGE;
       break;
     case guest:
     case guest|8:
@@ -513,7 +519,7 @@ secret_page (struct MHD_Connection *connection, enum level l)
       page = SUPERVISORPAGE;
       break;
     default:
-  page = "<html><body>Error</body></html>";
+      page = "<html><body>Unknown Error</body></html>";
   }
   //const char *page = "<html><body>A secret.</body></html>";
 //  if( verify_with_token )
@@ -525,7 +531,7 @@ secret_page (struct MHD_Connection *connection, enum level l)
   if (! response)
     return MHD_NO;
 
-  if(!verify_with_token){
+  if(!issue_token){		//Issue new token only when sign in with id/pw
     char* rawToken = createToken(l);
     printf("Encoded token: %s\n", rawToken);
     char token[300] = { 0 };
@@ -576,7 +582,7 @@ answer_to_connection (void *cls, struct MHD_Connection *connection,
 //At guest, add the branch processing invalid token. just goto ask_for_authentication.
   result=is_authenticated(connection, GUEST, GUESTPW);
 
-  if(result == error)
+  if(result == invalidToken_error || result == expiredToken_error)
     return secret_page(connection, result);
 
   printf("[*] GUEST result: %d\n", result);

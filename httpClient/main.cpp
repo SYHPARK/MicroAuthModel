@@ -28,7 +28,8 @@ void Net::CheckSite(QString url){
     //QByteArray token = "{\"name\":\"yongbak\"}";
     //QByteArray postDataSize = QByteArray::number(token.size());
 
-    QString auth = "i_don:know";//"user:user";
+    QString auth = "guest:guest";
+    //QString auth = "i_don:know";//"user:user";
     QByteArray data = auth.toLocal8Bit().toBase64();
     QString headerData = "Basic " + data;
 
@@ -38,10 +39,10 @@ void Net::CheckSite(QString url){
 //Wrong Token
     //QString token = "abcd.efgh.ijkl";
 //User Token
-    QString token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ5b25nYmFrIiwiZXhwIjoxNTk2NTIxODEzLjk1MDc4MywiaWF0IjoxNTk2NTE4MjEzLjk1MDc4MywibGV2ZWwiOiJ1c2VyIn0.lKUb9BkveeR2U_b4hz-4SrVpHqxkIWkGs92IWg7qbt4";
+    //QString token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ5b25nYmFrIiwiZXhwIjoxNTk2NTIxODEzLjk1MDc4MywiaWF0IjoxNTk2NTE4MjEzLjk1MDc4MywibGV2ZWwiOiJ1c2VyIn0.lKUb9BkveeR2U_b4hz-4SrVpHqxkIWkGs92IWg7qbt4";
 //Supervisor Token
-    //QString token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ5b25nYmFrIiwiZXhwIjoxNTk2NTIwNjY4LjMwODk2MTYsImlhdCI6MTU5NjUxNzA2OC4zMDg5NjE2LCJsZXZlbCI6InN1cGVydmlzb3IifQ.LozdeP7kze01pHtcLa7a2QuXRy-wLrOEQ-DHRcW180I";
-    request.setRawHeader("JSONToken", token.toLocal8Bit());
+    //QString token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ5b25nYmFrIiwiZXhwIjoxNTk2NTMyMDk4LjE4NjM5MjUsImlhdCI6MTU5NjUyODQ5OC4xODYzOTI1LCJsZXZlbCI6InN1cGVydmlzb3IifQ.mxpMEU4jR3WgBepafPyIrHcvNQKSa1oCYjh76082q1o";
+    //request.setRawHeader("JSONToken", token.toLocal8Bit());
     auto reply = manager->get(request);
 
     //request.setRawHeader("Content-Type", "text/html; charset=utf-8");
