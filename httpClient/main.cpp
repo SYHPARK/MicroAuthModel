@@ -25,37 +25,32 @@ void Net::replyFinished(QNetworkReply* reply){
 void Net::CheckSite(QString url){
     QUrl qrl(url);
     manager = new QNetworkAccessManager(this);
-    //QByteArray token = "{\"name\":\"yongbak\"}";
-    //QByteArray postDataSize = QByteArray::number(token.size());
 
-    QString auth = "guest:guest";
-    //QString auth = "i_don:know";//"user:user";
+    QString auth = "i_don_know";
+
+    //User: dXNlcjp1c2Vy
+    //Manager: bWFuYWdlcjptYW5hZ2Vy
     QByteArray data = auth.toLocal8Bit().toBase64();
     QString headerData = "Basic " + data;
 
     connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
     QNetworkRequest request = QNetworkRequest(QUrl(qrl));
     request.setRawHeader("Authorization", headerData.toLocal8Bit());
+
+    //QString token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ5b25nYmFrIiwiZXhwIjoxNTk2NzA4NzkwLjQwMTQ5MSwiaWF0IjoxNTk2NzA1MTkwLjQwMTQ5MSwibGV2ZWwiOiJzdXBlcnZpc29yIn0.gWNeFUTqFwKZKD2BYI99orNvHsJy20cYS6jdDDhmUx0";
+
 //Wrong Token
     //QString token = "abcd.efgh.ijkl";
-//User Token
-    //QString token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ5b25nYmFrIiwiZXhwIjoxNTk2NTIxODEzLjk1MDc4MywiaWF0IjoxNTk2NTE4MjEzLjk1MDc4MywibGV2ZWwiOiJ1c2VyIn0.lKUb9BkveeR2U_b4hz-4SrVpHqxkIWkGs92IWg7qbt4";
-//Supervisor Token
-    //QString token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ5b25nYmFrIiwiZXhwIjoxNTk2NTMyMDk4LjE4NjM5MjUsImlhdCI6MTU5NjUyODQ5OC4xODYzOTI1LCJsZXZlbCI6InN1cGVydmlzb3IifQ.mxpMEU4jR3WgBepafPyIrHcvNQKSa1oCYjh76082q1o";
-    //request.setRawHeader("JSONToken", token.toLocal8Bit());
+
+//Expired Token
+    QString token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ5b25nYmFrIiwiZXhwIjoxNTk2NTIxODEzLjk1MDc4MywiaWF0IjoxNTk2NTE4MjEzLjk1MDc4MywibGV2ZWwiOiJ1c2VyIn0.lKUb9BkveeR2U_b4hz-4SrVpHqxkIWkGs92IWg7qbt4";
+
+    request.setRawHeader("JSONToken", token.toLocal8Bit());
+
     auto reply = manager->get(request);
 
     //request.setRawHeader("Content-Type", "text/html; charset=utf-8");
     //auto reply = manager->post(request, token);
-
-    //QVariant attr = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
-
-    //QList<QByteArray> headerList = reply->rawHeaderList();
-    //int a=12;
-    //printf("%d", headerList[0]);
-    //printf("\n%d\n", reply->hasRawHeader("Content-Length"));
-    //cout<<reply->attribute("JWT");
-
 }
 
 int main(int argc, char *argv[])

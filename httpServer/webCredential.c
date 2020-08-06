@@ -446,6 +446,10 @@ is_authenticated (struct MHD_Connection *connection,
   token =
     MHD_lookup_connection_value (connection, MHD_HEADER_KIND,
 				 "JSONToken");
+  if(!token)
+    token = MHD_lookup_connection_value (connection, MHD_COOKIE_KIND,
+            			 "JSONToken");
+ 
   if(token){
     printf("token: %s\n", token);
 //    if(!strcmp (token, "abcd.efgh"))				//token
@@ -455,11 +459,12 @@ is_authenticated (struct MHD_Connection *connection,
     printf("Result of verifyToken(%s): %d\n", token, valid);
     if(valid == guest || valid == user || valid == manager || valid == supervisor){
       printf("Valid value: %d\n", valid | 8);
-      return valid | 8;
+      return valid | 8;		//Verify with token
     }
-    else return valid;
+    else return valid;		//Invalid token
   }
 
+//MHD_COOKIE_KIND
   headervalue =
     MHD_lookup_connection_value (connection, MHD_HEADER_KIND,
 				 "Authorization");
