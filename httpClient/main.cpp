@@ -37,7 +37,7 @@ void Net::CheckSite(QString url){
     QNetworkRequest request = QNetworkRequest(QUrl(qrl));
     request.setRawHeader("Authorization", headerData.toLocal8Bit());
 
-    //QString token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ5b25nYmFrIiwiZXhwIjoxNTk2NzA4NzkwLjQwMTQ5MSwiaWF0IjoxNTk2NzA1MTkwLjQwMTQ5MSwibGV2ZWwiOiJzdXBlcnZpc29yIn0.gWNeFUTqFwKZKD2BYI99orNvHsJy20cYS6jdDDhmUx0";
+    //QString token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ5b25nYmFrIiwiZXhwIjoxNTk3MjEyMTk3LjM4OTUwOTQsImlhdCI6MTU5NzIwODU5Ny4zODk1MDk0LCJsZXZlbCI6InVzZXIifQ._q3SWUEpsFDdmzxRcSBWV1hPFSLJLgYB4Nyzp155oDo";
 
 //Wrong Token
     //QString token = "abcd.efgh.ijkl";

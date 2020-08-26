@@ -36,8 +36,11 @@
 #define MANAGERPAGE	"<html><body>A manager.</body></html>"
 #define SUPERVISORPAGE	"<html><body>A supervisor.</body></html>"
 
-#define SERVERKEYFILE "server.key"
-#define SERVERCERTFILE "server.pem"
+#define SERVERKEYFILE "/home/yongbak/MicroAuthModel/key/server.key"	//www.example.com:8888
+#define SERVERCERTFILE "/home/yongbak/MicroAuthModel/key/server.pem"
+
+//#define SERVERKEYFILE "/home/yongbak/MicroAuthModel/key_yongbak/privkey-www.example.com.pem"	//www.yongbak.com:8888
+//#define SERVERCERTFILE "/home/yongbak/MicroAuthModel/key_yongbak/cert-www.example.com.pem"
 
 using namespace std;
 
@@ -635,10 +638,12 @@ main ()
   struct MHD_Daemon *daemon;
   char *key_pem;
   char *cert_pem;
-/*
+
   key_pem = load_file (SERVERKEYFILE);
   cert_pem = load_file (SERVERCERTFILE);
 
+  printf("Key: %p\nPem: %p\n", key_pem, cert_pem);
+  
   if ((key_pem == NULL) || (cert_pem == NULL))
   {
     printf ("The key/certificate files could not be read.\n");
@@ -646,28 +651,29 @@ main ()
       free (key_pem);
     if (NULL != cert_pem)
       free (cert_pem);
+//    return 1;
+  }
+
+
+//  printf("[*] before daemon\n");
+//  daemon = MHD_start_daemon(MHD_USE_INTERNAL_POLLING_THREAD, SERVERPORT, NULL, NULL,
+//		  		&answer_to_connection, NULL, MHD_OPTION_END);
+//  printf("[*] end daemon\n");
+
+
+  daemon =
+    MHD_start_daemon (MHD_USE_INTERNAL_POLLING_THREAD | MHD_USE_TLS, SERVERPORT, NULL,
+                      NULL, &answer_to_connection, NULL, 
+                      MHD_OPTION_HTTPS_MEM_KEY, key_pem,
+                      MHD_OPTION_HTTPS_MEM_CERT, cert_pem, MHD_OPTION_END);
+  if (NULL == daemon)
+  {
+    printf ("Error with this key and pem\n");
+    printf ("%s\n", cert_pem);
+    free (key_pem);
+    free (cert_pem);
     return 1;
   }
-*/
-  printf("[*] before daemon\n");
-  daemon = MHD_start_daemon(MHD_USE_INTERNAL_POLLING_THREAD, SERVERPORT, NULL, NULL,
-		  		&answer_to_connection, NULL, MHD_OPTION_END);
-  printf("[*] end daemon\n");
-//  daemon =
-//    MHD_start_daemon (MHD_USE_INTERNAL_POLLING_THREAD | MHD_USE_TLS, PORT, NULL,
-//                      NULL, &answer_to_connection, NULL, MHD_OPTION_END);
-//                      MHD_OPTION_HTTPS_MEM_KEY, key_pem,
-//                      MHD_OPTION_HTTPS_MEM_CERT, cert_pem, MHD_OPTION_END);
-//  if (NULL == daemon)
-//  {
-//    printf ("Error with this key and pem\n");
-//    printf ("%s\n", cert_pem);
-
-//    free (key_pem);
-//    free (cert_pem);
-
-//    return 1;
-//  }
 
   (void) getchar ();
 
