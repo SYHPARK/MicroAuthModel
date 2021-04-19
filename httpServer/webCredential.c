@@ -36,11 +36,11 @@
 #define MANAGERPAGE	"<html><body>A manager.</body></html>"
 #define SUPERVISORPAGE	"<html><body>A supervisor.</body></html>"
 
-#define SERVERKEYFILE "/home/yongbak/MicroAuthModel/key/server.key"	//www.example.com:8888
-#define SERVERCERTFILE "/home/yongbak/MicroAuthModel/key/server.pem"
+//#define SERVERKEYFILE "/home/yongbak/MicroAuthModel/key/server.key"	//www.example.com:8888
+//#define SERVERCERTFILE "/home/yongbak/MicroAuthModel/key/server.pem"
 
-//#define SERVERKEYFILE "/home/yongbak/MicroAuthModel/key_yongbak/privkey-www.example.com.pem"	//www.yongbak.com:8888
-//#define SERVERCERTFILE "/home/yongbak/MicroAuthModel/key_yongbak/cert-www.example.com.pem"
+#define SERVERKEYFILE "/home/yongbak/MicroAuthModel/key_sg/privkey-www.yongbak.com.pem"	//www.yongbak.com:8888
+#define SERVERCERTFILE "/home/yongbak/MicroAuthModel/key_sg/cert-www.yongbak.com.pem"
 
 using namespace std;
 
