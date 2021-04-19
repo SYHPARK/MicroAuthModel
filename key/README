@@ -1,0 +1,10 @@
+createKey.sh takes a parameter, which is the domain you will use.
+
+For example, if you want to use "www.yongbak.com" as your website, create microCA and certificate with the command below:
+
+./createKey.sh www.yongbak.com
+
+
+The command above create several files.
+
+The client(Browser) takes .crt file, and the server takes privkey and cert files. 
